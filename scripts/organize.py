@@ -1,21 +1,22 @@
 import os
 import shutil
 
+original_data_dir = "data/Original"
 base_dir = "data"
 
 images_dir = {
-    "base": os.path.join(base_dir, "images"),
+    "base": os.path.join(original_data_dir, "images"),
     "train": os.path.join(base_dir, "images", "train"),
     "val": os.path.join(base_dir, "images", "val"),
 }
 labels_dir = {
-    "base": os.path.join(base_dir, "labels"),
+    "base": os.path.join(original_data_dir, "labels"),
     "train": os.path.join(base_dir, "labels", "train"),
     "val": os.path.join(base_dir, "labels", "val"),
 }
 
-train_list_path = os.path.join(base_dir, "train_files.txt")
-val_list_path = os.path.join(base_dir, "val_files.txt")
+train_list_path = os.path.join(original_data_dir, "train_files.txt")
+val_list_path = os.path.join(original_data_dir, "val_files.txt")
 
 with open(train_list_path, "r") as f:
     train_files_name = [line.strip() for line in f if line.strip()]
@@ -54,3 +55,11 @@ for img_name in val_files_name:
         shutil.copy(img_path, images_dir['val'])
         print(f"cp {label_path} {labels_dir['val']}")
         shutil.copy(label_path, labels_dir['val'])
+
+
+# 0 → 0 (Person)
+# 1 → 1 (Head)
+# 2 → 2 (Face)
+# 3 → 3 (Glasses)
+# 14 → 4 (Helmet)
+mapping = {0: 0, 1: 1, 2: 2, 3: 3, 14: 4}
