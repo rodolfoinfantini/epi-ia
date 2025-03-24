@@ -1,19 +1,26 @@
 import os
 import shutil
 
-original_data_dir = "data/Original"
 base_dir = "data"
+original_data_dir = "original_dataset"
+
+os.mkdir(base_dir)
+os.mkdir(os.path.join(base_dir, "images"))
 
 images_dir = {
     "base": os.path.join(original_data_dir, "images"),
     "train": os.path.join(base_dir, "images", "train"),
     "val": os.path.join(base_dir, "images", "val"),
 }
+os.makedirs(images_dir["train"])
+os.makedirs(images_dir["val"])
 labels_dir = {
     "base": os.path.join(original_data_dir, "labels"),
     "train": os.path.join(base_dir, "labels", "train"),
     "val": os.path.join(base_dir, "labels", "val"),
 }
+os.makedirs(labels_dir["train"])
+os.makedirs(labels_dir["val"])
 
 train_list_path = os.path.join(original_data_dir, "train_files.txt")
 val_list_path = os.path.join(original_data_dir, "val_files.txt")
