@@ -1,14 +1,13 @@
-import cv2
+import cv2 as cv
+import argparse
+from PIL import Image
 from ultralytics import YOLO
 
 
-def main():
-    model = YOLO("runs/detect/train8/weights/best.pt")
-
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Erro ao abrir a webcam.")
-        return
+def main(args):
+    model = YOLO(f"runs/detect/{args.model}/weights/best.pt")
+    cv.namedWindow("preview")
+    cap = cv.VideoCapture(0)
 
     while True:
         ret, frame = cap.read()
@@ -19,19 +18,29 @@ def main():
         # Executa a inferência no frame
         # O método retorna uma lista de resultados, onde cada elemento é uma imagem com as anotações desenhadas.
         # Certifique-se que o dispositivo esteja configurado corretamente
-        results = model(frame, device="cuda")
+
+        # frame_pil = Image.fromarray(frame)
+        results = model(frame, device=args.device)
+        print(len(results))
         annotated_frame = results[0].plot()
 
         # Exibe o frame anotado
-        cv2.imshow("Detecção de EPIs - Webcam", annotated_frame)
+        cv.imshow("preview", annotated_frame)
 
         # Se a tecla 'q' for pressionada, encerra o loop
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+        if cv.waitKey(1) & 0xFF == ord("q"):
             break
 
     cap.release()
-    cv2.destroyAllWindows()
+    cv.destroyWindow("preview")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Execução do modelo de detecção de EPIs com YOLOv8")
+    parser.add_argument("--model", type=str, default="train8",
+                        help="Modelo treinado (default: train8)")
+    parser.add_argument("--device", type=str, default="cuda",
+                        help="Dispositivo (ex.: 'cuda' ou 'cpu', default: cuda)")
+    args = parser.parse_args()
+    main(args)
