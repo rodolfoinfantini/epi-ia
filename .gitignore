@@ -1,5 +1,4 @@
 *.cache
-runs/
 yolo11n.pt
 yolov8n.pt
 data.zip

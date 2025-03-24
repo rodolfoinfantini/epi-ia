@@ -13,6 +13,7 @@ def main(args):
         imgsz=args.img_size,
         device=args.device,
         batch=args.batch_size,
+        save_dir="E:/dev/puc/epi-ia/logs"
     )
 
     print("Treinamento concluído!")

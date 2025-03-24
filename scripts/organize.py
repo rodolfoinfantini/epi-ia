@@ -1,4 +1,5 @@
 import os
+import shutil
 
 base_dir = "data"
 
@@ -31,9 +32,9 @@ for img_name in train_files_name:
         # copy image to image train folder
         # copy label to label train folder
         print(f"cp {img_path} {images_dir['train']}")
-        os.system(f"cp {img_path} {images_dir['train']}")
+        shutil.copy(img_path, images_dir['train'])
         print(f"cp {label_path} {labels_dir['train']}")
-        os.system(f"cp {label_path} {labels_dir['train']}")
+        shutil.copy(label_path, labels_dir['train'])
 
 with open(val_list_path, "r") as f:
     val_files_name = [line.strip() for line in f if line.strip()]
@@ -50,6 +51,6 @@ for img_name in val_files_name:
         # copy image to image val folder
         # copy label to label val folder
         print(f"cp {img_path} {images_dir['val']}")
-        os.system(f"cp {img_path} {images_dir['val']}")
+        shutil.copy(img_path, images_dir['val'])
         print(f"cp {label_path} {labels_dir['val']}")
-        os.system(f"cp {label_path} {labels_dir['val']}")
+        shutil.copy(label_path, labels_dir['val'])
