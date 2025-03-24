@@ -1,0 +1,34 @@
+# Versão mínima do PyTorch com suporte à GPU (ajuste conforme seu ambiente CUDA)
+torch>=1.10.0
+torchvision>=0.11.0
+
+# OpenCV para captura e processamento de vídeo/imagens
+opencv-python>=4.5.3.56
+
+# Albumentations para data augmentation
+albumentations>=1.2.0
+
+# Biblioteca NumPy para operações numéricas
+numpy>=1.19.5
+
+# PyYAML para ler arquivos de configuração (como o data.yaml)
+PyYAML>=6.0
+
+# SciPy (opcional, para funções matemáticas e outras utilidades)
+scipy>=1.7.3
+
+opencv-python>=4.5.3.56
+
+
+
+gitpython>=3.1.30
+matplotlib>=3.3
+numpy>=1.23.5
+pillow>=10.3.0
+psutil  # system resources
+requests>=2.32.2
+thop>=0.1.1  # FLOPs computation
+tqdm>=4.66.3
+ultralytics>=8.3.95
+pandas>=1.1.4
+seaborn>=0.11.0

@@ -1,0 +1,9 @@
+*.cache
+runs/
+yolo11n.pt
+yolov8n.pt
+data.zip
+data/images/
+data/labels/
+data/train_files.txt
+data/val_files.txt
