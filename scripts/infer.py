@@ -20,7 +20,7 @@ def main():
         # O método retorna uma lista de resultados, onde cada elemento é uma imagem com as anotações desenhadas.
         # Certifique-se que o dispositivo esteja configurado corretamente
         results = model(frame, device="cuda")
-        annotated_frame = results.render()[0]
+        annotated_frame = results[0].plot()
 
         # Exibe o frame anotado
         cv2.imshow("Detecção de EPIs - Webcam", annotated_frame)
