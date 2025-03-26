@@ -62,6 +62,7 @@ current_index = 0
 
 while True:
     # Carrega a imagem atual
+    print(current_index)
     image_file = image_files[current_index]
     print(image_file)
     image_path = os.path.join(images_dir, image_file)
