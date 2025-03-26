@@ -65,8 +65,25 @@ with open(val_list_path, "r") as f:
 copy_files(train_files_name, "train")
 copy_files(val_files_name, "val")
 
+# 0: Person
+# 1: Ear
+# 3: Face
+# 5: Mask
+# 7: Hammer
+# 8: Glasses
+# 9: Gloves
+# 10: Helmet
+# 11: Hands
+# 12: Head
+# 14: Shoes
 # Mapeamento: índice original -> novo índice (apenas para as classes desejadas)
-mapping = {0: 0, 1: 1, 2: 2, 3: 3, 14: 4}
+mapping = {
+    0: 0,
+    3: 1,
+    8: 2,
+    10: 3,
+    12: 4
+}
 
 
 def filter_label_file(filepath):
@@ -103,6 +120,8 @@ def process_labels(label_dir):
             filepath = os.path.join(split_dir, file)
             filter_label_file(filepath)
 
+
+print()
 
 # Aplica o filtro de labels nos diretórios de treino e validação com progress bar
 process_labels(os.path.join(base_dir, "labels"))
