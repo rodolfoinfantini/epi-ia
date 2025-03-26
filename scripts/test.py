@@ -20,16 +20,11 @@ import os
 # Safety-suit
 
 # Diretórios das imagens e labels
-images_dir = 'datasets/images'
-labels_dir = 'datasets/labels'
+images_dir = 'data/images/train'
+labels_dir = 'data/labels/train'
 
 # Lista de classes (ajuste conforme seu dataset)
-classes = [
-    'Person', 'Head', 'Face', 'Glasses', 'Face-mask-medical',
-    'Face-guard', 'Ear', 'Earmuffs', 'Hands', 'Gloves',
-    'Foot', 'Shoes', 'Safety-vest', 'Tools', 'Helmet',
-    'Medical-suit', 'Safety-suit'
-]
+classes = ['Person', 'Head', 'Face', 'Glasses', 'Helmet']
 
 
 def load_annotations(label_path, img_width, img_height):
