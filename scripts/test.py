@@ -101,9 +101,9 @@ while True:
 
     if key == ord('q'):  # Pressione 'q' para sair
         break
-    elif key == 81:  # Tecla de seta para a esquerda
+    elif key == 104:  # H
         current_index = (current_index - 1) % len(image_files)
-    elif key == 83:  # Tecla de seta para a direita
+    elif key == 108:  # L
         current_index = (current_index + 1) % len(image_files)
     else:
         print(key)
