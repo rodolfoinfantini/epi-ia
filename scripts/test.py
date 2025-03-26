@@ -63,9 +63,12 @@ current_index = 0
 while True:
     # Carrega a imagem atual
     image_file = image_files[current_index]
+    print(image_file)
     image_path = os.path.join(images_dir, image_file)
+    print(image_path)
     label_path = os.path.join(
         labels_dir, os.path.splitext(image_file)[0] + '.txt')
+    print(label_path)
 
     img = cv2.imread(image_path)
     if img is None:
