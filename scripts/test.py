@@ -105,6 +105,8 @@ while True:
         current_index = (current_index - 1) % len(image_files)
     elif key == 83:  # Tecla de seta para a direita
         current_index = (current_index + 1) % len(image_files)
+    else:
+        print(key)
 
     # Fecha a janela
     cv2.destroyAllWindows()
