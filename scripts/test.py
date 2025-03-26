@@ -51,8 +51,8 @@ def load_annotations(label_path, img_width, img_height):
 
 
 # Lista de arquivos de imagem
-image_files = [f for f in os.listdir(images_dir) if f.endswith(
-    '.jpg') or f.endswith('.png') or f.endswith('.jpeg')]
+image_files = [f for f in os.listdir(images_dir)]
+print(len(image_files))
 if not image_files:
     print("Nenhuma imagem encontrada em", images_dir)
     exit(1)
