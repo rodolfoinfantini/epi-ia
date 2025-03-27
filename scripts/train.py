@@ -22,8 +22,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Treinamento do modelo de detecção de EPIs com YOLOv8")
-    parser.add_argument("--data", type=str, default="data/epidata.yaml",
-                        help="Caminho para o arquivo de configuração do dataset (ex.: datasets/epidata.yaml)")
+    parser.add_argument("--data", type=str, default="data/datasets.yaml",
+                        help="Caminho para o arquivo de configuração do dataset (ex.: data/datasets.yaml)")
     parser.add_argument("--epochs", type=int, default=50,
                         help="Número de épocas de treinamento (default: 50)")
     parser.add_argument("--img_size", type=int, default=640,

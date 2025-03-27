@@ -2,4 +2,4 @@ path: ../data
 train: images/train
 val: images/val
 nc: 5
-mes: ['Person', 'Face', 'Glasses', 'Helmet', 'Head']
+names: ['Person', 'Face', 'Glasses', 'Helmet', 'Head']
