@@ -1,10 +1,11 @@
 import cv2 as cv
 import argparse
-from PIL import Image
 from ultralytics import YOLO
+from overlap import check_overlap
 
 
 def main(args):
+    print(f"Carregando modelo {args.model}...")
     model = YOLO(f"runs/detect/{args.model}/weights/best.pt")
     cv.namedWindow("preview")
     cap = cv.VideoCapture(0)
@@ -21,7 +22,8 @@ def main(args):
 
         # frame_pil = Image.fromarray(frame)
         results = model(frame, device=args.device)
-        print(len(results))
+        check_overlap(frame, results[0])
+
         annotated_frame = results[0].plot()
 
         # Exibe o frame anotado
