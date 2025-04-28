@@ -1,7 +1,10 @@
 from typing import List, Tuple, Dict
 from alert_debouncer import AlertDebouncer
+from recorder import VideoRecorder
+from database import save_alert
 import numpy as np
-import cv2 as cv
+import time
+import os
 
 # 2 segundos de persistência
 debouncer = AlertDebouncer(persist_time=3.0, iou_thresh=0.5)
@@ -11,10 +14,15 @@ overlay_pipelines = [['Person', 'Face', 'Glasses'],
 conf_threshold = {
     'Person': 0.6,
     'Face': 0.6,
-    'Glasses': 0.4,
+    'Glasses': 0.3,
     'Head': 0.5,
-    'Helmet': 0.5
+    'Helmet': 0.4
 }
+output_dir = "recordings"
+os.makedirs(output_dir, exist_ok=True)
+recording_duration = 30.0  # segundos
+
+active_recorders: Dict[str, 'VideoRecorder'] = {}
 
 
 def filter_predictions(res, conf_threshold: Dict) -> List[Tuple[List[float], str, float]]:
@@ -32,11 +40,42 @@ def filter_predictions(res, conf_threshold: Dict) -> List[Tuple[List[float], str
     return filtered
 
 
+def generate_alert_id(alert: Dict) -> str:
+    """
+    Só pelo tipo de 'missing' — assim não disparamos duas vezes
+    para o mesmo tipo, mesmo em posições diferentes.
+    """
+    return alert['missing']
+
+
 def check_overlap(image, results):
     preds = filter_predictions(results, conf_threshold)
     alerts = run_overlap_pipelines(preds, overlay_pipelines)
     confirmed = debouncer.update(alerts)
-    print(confirmed)
+
+    h, w = image.shape[:2]
+    frame_size = (w, h)
+
+    # atualiza recorders em andamento
+    for aid, rec in list(active_recorders.items()):
+        file_saved = rec.update(image)
+        if not rec.is_active():
+            del active_recorders[aid]
+
+        if file_saved is not None:
+            split = file_saved.split('/')[1].split("_")
+            save_alert(split[0], f"{split[1]}_{split[2]}", file_saved)
+
+    # inicia novos para cada tipo
+    for alert in confirmed:
+        aid = generate_alert_id(alert)
+        if aid not in active_recorders:
+            ts = time.strftime("%Y%m%d_%H%M%S")
+            fname = os.path.join(output_dir, f"{aid}_{ts}.mp4")
+            rec = VideoRecorder(fname, recording_duration, frame_size)
+            active_recorders[aid] = rec
+
+    return confirmed
 
 
 def has_overlap(a, b) -> bool:

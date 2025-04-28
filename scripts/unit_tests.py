@@ -1,4 +1,5 @@
 from overlap import has_overlap
+from database import save_alert
 
 
 def has_overlap_test():
@@ -55,4 +56,27 @@ def has_overlap_test():
               expected}, obtido={result} [{status}]")
 
 
+def save_alert_test():
+    tests = [
+        {
+            'alert_class': 'Glasses',
+            'timestamp': '20250427_204000',
+            'filename': 'recordings/Glasses_20250427_204000.mp4',
+        },
+        {
+            'alert_class': 'Helmet',
+            'timestamp': '20250427_204500',
+            'filename': 'recordings/Helmet_20250427_204500.mp4',
+        },
+    ]
+
+    for test in tests:
+        alert_class = test['alert_class']
+        timestamp = test['timestamp']
+        filename = test['filename']
+
+        save_alert(alert_class, timestamp, filename)
+
+
 has_overlap_test()
+save_alert_test()
