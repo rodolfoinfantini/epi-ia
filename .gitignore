@@ -7,3 +7,8 @@ data/labels/
 data/train_files.txt
 data/val_files.txt
 original_dataset
+dashboard/node_modules/
+dashboard/.env
+scripts/__pycache__/
+recordings/
+.env

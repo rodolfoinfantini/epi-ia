@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer type="module" src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <button id="btn-occurrences" class="active">Ocorrências</button>
+      <button id="btn-statistics">Estatísticas</button>
+    </aside>
+    <main class="content">
+      <div id="quick-stats" class="quick-stats"></div>
+      <div id="sections"></div>
+      <div id="loading">Carregando…</div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button id="modal-close">&times;</button>
+      <video id="modal-video" controls autoplay></video>
+    </div>
+  </div>
+
+</body>
+</html>
+
