@@ -20,7 +20,7 @@ class VideoRecorder:
         self.frames: List[np.ndarray] = []
         self.stopped = False
 
-        # Gera o caminho da thumbnail (.png) a partir do .mp4
+        # Gera o caminho da thumbnail (.png) a partir do .webm
         base, _ = os.path.splitext(filename)
         self.thumb_path = base + ".png"
         self._thumb_saved = False
@@ -50,7 +50,7 @@ class VideoRecorder:
     def stop_and_write(self, elapsed: float):
         """Calcula fps = len(frames)/elapsed e escreve o vídeo."""
         fps = len(self.frames) / elapsed if elapsed > 0 else 1.0
-        fourcc = cv.VideoWriter_fourcc(*"mp4v")
+        fourcc = cv.VideoWriter_fourcc(*'VP90')
         writer = cv.VideoWriter(self.filename, fourcc, fps, self.frame_size)
         for f in self.frames:
             writer.write(f)

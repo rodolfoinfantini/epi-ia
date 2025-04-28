@@ -71,7 +71,7 @@ def check_overlap(image, results):
         aid = generate_alert_id(alert)
         if aid not in active_recorders:
             ts = time.strftime("%Y%m%d_%H%M%S")
-            fname = os.path.join(output_dir, f"{aid}_{ts}.mp4")
+            fname = os.path.join(output_dir, f"{aid}_{ts}.webm")
             rec = VideoRecorder(fname, recording_duration, frame_size)
             active_recorders[aid] = rec
 

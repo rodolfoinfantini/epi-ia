@@ -52,8 +52,7 @@ def has_overlap_test():
     for xy1, xy2, expected in tests:
         result = has_overlap(xy1, xy2)
         status = "OK" if result == expected else "FAIL"
-        print(f"{xy1=} {xy2=} → esperado={
-              expected}, obtido={result} [{status}]")
+        print(f"{xy1=} {xy2=} → e={expected}, o={result} [{status}]")
 
 
 def save_alert_test():
@@ -61,12 +60,12 @@ def save_alert_test():
         {
             'alert_class': 'Glasses',
             'timestamp': '20250427_204000',
-            'filename': 'recordings/Glasses_20250427_204000.mp4',
+            'filename': 'recordings/Glasses_20250427_204000.webm',
         },
         {
             'alert_class': 'Helmet',
             'timestamp': '20250427_204500',
-            'filename': 'recordings/Helmet_20250427_204500.mp4',
+            'filename': 'recordings/Helmet_20250427_204500.webm',
         },
     ]
 

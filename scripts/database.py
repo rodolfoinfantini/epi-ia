@@ -1,22 +1,25 @@
 import pymongo
+from dotenv import load_dotenv
 from datetime import datetime, timezone, timedelta
+import os
 
-client = pymongo.MongoClient(
-    "mongodb+srv://root:h1E5dIxVZo26CjpW@luster0.enxl3qe.mongodb.net/")
+load_dotenv()
+
+client = pymongo.MongoClient(os.getenv("MONGO_URI"))
 db = client["epi_ia"]
 collection = db["alerts"]
 
 
 def save_alert(alert_class, timestamp, filename):
     timestamp = datetime.strptime(
-        timestamp.replace('.mp4', ''), "%Y%m%d_%H%M%S")
+        timestamp.replace('.webm', ''), "%Y%m%d_%H%M%S")
     br_tz = timezone(timedelta(hours=-3))
     br_timestamp = timestamp.replace(tzinfo=br_tz)
     alert = {
         "class": alert_class,
         "timestamp": br_timestamp,
         "record": filename,
-        "thumb": filename.replace(".mp4", ".png"),
+        "thumb": filename.replace(".webm", ".png"),
     }
 
     collection.insert_one(alert)
