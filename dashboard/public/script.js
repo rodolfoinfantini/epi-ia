@@ -1,14 +1,44 @@
 const API = {
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
     page: 1,
     size: 15,
     hasNext: true,
     async fetchNext() {
         if (!this.hasNext) return null;
-        const res = await fetch(`alerts?page=${this.page}&size=${this.size}`);
-        const data = await res.json();
-        this.hasNext = data.hasNext;
-        this.page++;
-        return data.alerts;
+
+        try {
+            const res = await fetch(`/alerts?page=${this.page}&size=${this.size}`, {
+                headers: API.headers
+            });
+            const data = await res.json();
+            this.hasNext = data.hasNext;
+            this.page++;
+            return data.alerts;
+        } catch (err) {
+            location.href = '/login'
+        }
+    },
+    async stats() {
+        try {
+            const res = await fetch('/quick-stats', {
+                headers: API.headers
+            })
+            return await res.json()
+        } catch (err) {
+            location.href = '/login'
+        }
+    },
+    async fetchImage(url) {
+        try {
+            const res = await fetch(url, {
+                headers: API.headers
+            })
+            return await res.blob()
+        } catch (err) {
+            location.href = '/login'
+        }
     },
     reset() {
         this.page = 1;
@@ -34,8 +64,7 @@ function formatTime(iso) {
 }
 
 async function loadStats() {
-    const res = await fetch('http://localhost:3000/quick-stats');
-    const stats = await res.json();
+    const stats = await API.stats();
 
     const quickStatsEl = document.getElementById('quick-stats');
     quickStatsEl.innerHTML = ''; // limpa conteúdo anterior
@@ -97,7 +126,10 @@ function renderAlerts(alerts) {
         card.className = 'card';
 
         const img = document.createElement('img');
-        img.src = a.thumb;
+        API.fetchImage(a.thumb)
+            .then(blob => {
+                img.src = URL.createObjectURL(blob)
+            })
         img.alt = translations[a.class] || a.class;
         card.appendChild(img);
 
@@ -119,7 +151,10 @@ function renderAlerts(alerts) {
         btn.onclick = () => {
             const modalVideo = document.getElementById('modal-video');
             document.getElementById('modal').classList.remove('hidden');
-            modalVideo.src = a.record;
+            API.fetchImage(a.record)
+                .then(blob => {
+                    modalVideo.src = URL.createObjectURL(blob)
+                })
         };
         actions.appendChild(btn);
         card.appendChild(actions);
