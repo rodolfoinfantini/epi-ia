@@ -20,7 +20,7 @@ conf_threshold = {
 }
 output_dir = "recordings"
 os.makedirs(output_dir, exist_ok=True)
-recording_duration = 30.0  # segundos
+recording_duration = 15.0  # segundos
 
 active_recorders: Dict[str, 'VideoRecorder'] = {}
 
