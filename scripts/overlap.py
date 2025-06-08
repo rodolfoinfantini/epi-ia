@@ -6,21 +6,21 @@ import numpy as np
 import time
 import os
 
-# 2 segundos de persistência
-debouncer = AlertDebouncer(persist_time=3.0, iou_thresh=0.5)
+# 10 segundos de persistência
+debouncer = AlertDebouncer(persist_time=10.0, iou_thresh=0.5)
 
 overlay_pipelines = [['Person', 'Face', 'Glasses'],
                      ['Person', 'Head', 'Helmet']]
 conf_threshold = {
-    'Person': 0.6,
-    'Face': 0.6,
+    'Person': 0.5,
+    'Face': 0.5,
     'Glasses': 0.3,
     'Head': 0.5,
-    'Helmet': 0.4
+    'Helmet': 0.3
 }
 output_dir = "recordings"
 os.makedirs(output_dir, exist_ok=True)
-recording_duration = 15.0  # segundos
+recording_duration = 60.0  # segundos
 
 active_recorders: Dict[str, 'VideoRecorder'] = {}
 
