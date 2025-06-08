@@ -67,7 +67,7 @@ async function loadStats() {
     const stats = await API.stats();
 
     const quickStatsEl = document.getElementById('quick-stats');
-    quickStatsEl.innerHTML = ''; // limpa conteúdo anterior
+    quickStatsEl.innerHTML = '';
 
     const title = document.createElement('h2');
     title.textContent = 'Ocorrências hoje';
@@ -76,7 +76,6 @@ async function loadStats() {
     const statsContainer = document.createElement('div');
     statsContainer.className = 'stats-container';
 
-    // Card de Total
     const totalDiv = document.createElement('div');
     totalDiv.className = 'stat-card';
 
@@ -90,7 +89,6 @@ async function loadStats() {
     totalDiv.appendChild(totalCount);
     statsContainer.appendChild(totalDiv);
 
-    // Cards individuais por classe
     for (const cls in stats.classes) {
         const div = document.createElement('div');
         div.className = 'stat-card';
@@ -189,19 +187,11 @@ contentEl.addEventListener('scroll', () => {
     }
 });
 
-// modal close
 document.getElementById('modal-close').onclick = () => {
     document.getElementById('modal').classList.add('hidden');
     document.getElementById('modal-video').pause();
 };
 
-// sidebar buttons
-document.getElementById('btn-occurrences').onclick = () => { };
-document.getElementById('btn-statistics').onclick = () => {
-    alert('Estatísticas não implementado');
-};
-
-// init
 loadStats();
 loadMore();
 // a cada 5 minutos, recarrega toda a lista

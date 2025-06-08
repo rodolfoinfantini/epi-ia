@@ -233,3 +233,24 @@ body {
   font-weight: bold;
 }
 
+/* Container dos charts */
+#stats-container {
+  display: grid;
+  grid-template-columns: 1fr;   /* uma coluna por padrão */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Cada gráfico ocupa toda a largura da coluna */
+.chart-wrapper {
+  background: var(--accent);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Para telas maiores que 800px, use 2 colunas */
+@media (min-width: 800px) {
+  #stats-container {
+    grid-template-columns: 1fr 1fr;  /* duas colunas */
+  }
+}

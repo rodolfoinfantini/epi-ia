@@ -112,6 +112,98 @@ app.get('/quick-stats', validateToken, async (req, res) => {
     res.json(statsObj)
 })
 
+// 1) Série diária (últimos 30 dias)
+app.get('/stats/daily', validateToken, async (_, res) => {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const past = new Date(today); past.setDate(past.getDate() - 29);
+    const data = await Alert.aggregate([
+        { $match: { timestamp: { $gte: past, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) } } },
+        {
+            $group: {
+                _id: { $dateToString: { date: '$timestamp', format: '%Y-%m-%d' } },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { '_id': 1 } }
+    ]);
+    // preenche datas faltantes com zero
+    const labels = [], series = [];
+    for (let d = new Date(past); d <= today; d.setDate(d.getDate() + 1)) {
+        const key = d.toISOString().substring(0, 10);
+        labels.push(key);
+        const item = data.find(x => x._id === key);
+        series.push(item ? item.count : 0);
+    }
+    res.json({ labels, series });
+});
+
+// 2) Totais por classe (últimos 30 dias)
+app.get('/stats/classes', validateToken, async (_, res) => {
+    const since = new Date(); since.setDate(since.getDate() - 30);
+    const data = await Alert.aggregate([
+        { $match: { timestamp: { $gte: since } } },
+        { $group: { _id: '$class', count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+    ]);
+    const labels = data.map(x => x._id);
+    const series = data.map(x => x.count);
+    res.json({ labels, series });
+});
+
+// 3) Distribuição horária (0–23h, últimos 7 dias)
+app.get('/stats/hourly', validateToken, async (_, res) => {
+    const since = new Date(); since.setDate(since.getDate() - 7);
+    const data = await Alert.aggregate([
+        { $match: { timestamp: { $gte: since } } },
+        {
+            $group: {
+                _id: { $hour: '$timestamp' },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { '_id': 1 } }
+    ]);
+    // preenche 0–23
+    const labels = Array.from({ length: 24 }, (_, i) => i.toString());
+    const series = labels.map(h => {
+        const it = data.find(x => x._id === parseInt(h));
+        return it ? it.count : 0;
+    });
+    res.json({ labels, series });
+});
+
+// 4) Heatmap dia × classe (últimos 30 dias)
+app.get('/stats/heatmap', validateToken, async (_, res) => {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const past = new Date(today); past.setDate(past.getDate() - 29);
+    const data = await Alert.aggregate([
+        { $match: { timestamp: { $gte: past, $lt: new Date(today.getTime() + 86400000) } } },
+        {
+            $group: {
+                _id: {
+                    day: { $dateToString: { date: '$timestamp', format: '%Y-%m-%d' } },
+                    cls: '$class'
+                },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { '_id.day': 1 } }
+    ]);
+    // coleciona labels dias e classes
+    const days = [], classes = Array.from(new Set(data.map(x => x._id.cls)));
+    for (let d = new Date(past); d <= today; d.setDate(d.getDate() + 1)) {
+        days.push(d.toISOString().substring(0, 10));
+    }
+    // montar matriz [classes.length][days.length]
+    const matrix = classes.map(cls =>
+        days.map(day => {
+            const it = data.find(x => x._id.day === day && x._id.cls === cls);
+            return it ? it.count : 0;
+        })
+    );
+    res.json({ days, classes, matrix });
+});
+
 app.post('/users', validateToken, async (req, res) => {
     const { email, password } = req.body
 
